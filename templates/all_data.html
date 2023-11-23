@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Data</title>
+</head>
+<body>
+    <h1>Data from the API</h1>
+    <ul>
+        {% for item in data %}
+            <li>{{ item.field_name }}</li>
+            <!-- Replace 'field_name' with the actual field name you want to display -->
+        {% endfor %}
+    </ul>
+</body>
+</html>

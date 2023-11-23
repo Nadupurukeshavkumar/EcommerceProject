@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PRODUCT SEARCH</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        /* Container for search input and products */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Search input style */
+        #searchInput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .product-item {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-info {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .product-info img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-info a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .product-info a:hover {
+            text-decoration: underline;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product-container .product-item {
+            width: calc(50% - 10px);
+            /* Considering margin between items */
+        }
+
+        @media (max-width: 768px) {
+            .product-container .product-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Search your products</h1>
+    </header>
+
+    <div class="container">
+        <input type="text" id="searchInput" placeholder="Search for products">
+
+        <div id="dataList" class="product-container">
+            <!-- Example data, replace this with your actual data from the API -->
+            {% for item in data %}
+            <div class="product-item">
+                <div class="product-info">
+                    <strong>NAME: </strong>{{ item.title }}<br>
+                    <strong>PRICE(AMAZON): $</strong>{{ item.price }}<br>
+                    <a href="https://www.amazon.com">GET YOUR PRODUCT HERE</a><br>
+                    <strong>PRICE(FLIPKART): $</strong><span class="flipkart-price">{{ item.flipkartPrice }}</span><br>
+                    <a href="https://www.flipkart.com">GET YOUR PRODUCT HERE</a><br>
+                    <strong>DESCRIPTION: </strong>{{ item.description }}
+                </div>
+                <div class="product-info">
+                    <img src="{{ item.image }}" alt="{{ item.title }}">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("searchInput").addEventListener("input", function() {
+            const searchText = this.value.toLowerCase();
+            const dataList = document.getElementById("dataList");
+            const items = dataList.querySelectorAll(".product-item");
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const text = item.textContent.toLowerCase();
+
+                if (text.includes(searchText)) {
+                    const randomFlipkartPrice = (Math.random() * 90 + 10).toFixed(2);
+                    const flipkartPriceElement = item.querySelector(".flipkart-price");
+                    flipkartPriceElement.textContent = "$" + randomFlipkartPrice;
+
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            }
+
+            if (searchText.trim() !== "") {
+                dataList.style.display = "flex";
+            } else {
+                dataList.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>
